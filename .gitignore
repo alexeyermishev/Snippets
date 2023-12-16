@@ -1,6 +1,9 @@
+django_venv
 .idea/
 .vscode/
-*venv/
+*env/
 __pycache__/
 *.pyc
 db.*
+.env
+static/img/
