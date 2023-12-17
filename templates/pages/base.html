@@ -1,5 +1,4 @@
 {% load static %}
-<!-- {% static 'main.css' %} -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,19 +10,14 @@
     {% endblock %}
 </head>
 <body>
+    
     <div class="wrap">
-        <div class="header">
-        {% include 'inc-header.html' %}
-        </div>
+        
         <div class="content">
         {#  Содержимое этого блока уникально на каждой странице #}
         {% block content %}
         {% endblock %}
         </div>
-    </div>
-    <div class="footer">
-        {% include 'footer.html' %}
     </div> 
 </body>
-
 </html>
