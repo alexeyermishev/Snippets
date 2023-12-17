@@ -21,19 +21,19 @@
                 </div>
             </div>
         </fieldset>
-        <div class="row">
-            <div class="col">
-                <form action="{% url 'snippet' snippet.id %}", method="post">
-                {% csrf_token %}
-                <button class="btn btn-success">Редактировать</button>
-                </form>
+            <div class="row" style="display: flex; flex-direction: column;">
+                <div class="col" style="padding: 5px;">
+                    <form action="{% url 'snippet' snippet.id %}", method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-success" style="width: 250px;">Редактировать</button>
+                    </form>
+                </div>
+                <div class="col" style="padding: 5px;"> 
+                    <form action="{% url 'req_del' snippet.id %}">
+                    <button class="btn btn-danger" style="width: 250px;">Удалить</button>
+                    </form>
+                </div>
             </div>
-            <div class="col">
-                <form action="{% url 'req_del' snippet.id %}">
-                <button class="btn btn-danger">Удалить</button>
-                </form>
-            </div>
-        </div>
     </div>
 </main>
 {% endblock %}
