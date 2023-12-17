@@ -2,6 +2,8 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from MainApp.models import Snippet
 from MainApp.forms import SnippetForm
+from MainApp.forms import UserForm
+
 
 
 
@@ -42,6 +44,8 @@ def get_snippet(request, snippet_id):
     context = {
         "snippet":snippet
     }
+    if request.method == "POST":
+        return render(request, 'pages/edit_snippet.html', context)
     return render(request, 'pages/snippet.html', context)
 
 def create_snippet(request):
@@ -62,14 +66,24 @@ def req_del(request, snippet_id):
     }
     return render(request, 'pages/snippet_delete.html', context)
 
-
 def delete_snippet(request, snippet_id):
     snippet = Snippet.objects.get(id=snippet_id)
     if request.method =="POST":
         snippet.delete()
-        return redirect('snippetslist')
+    return redirect('snippetslist')
  
     return render(request, "pages/delete_snippet.html")
+
+def edit_snippet(request, snippet_id):
+    snippet = Snippet.objects.get(id=snippet_id)
+    if request.method =="POST":
+        if 'saved' in request.POST:
+            snippet.name = request.POST.get("name")
+            snippet.code = request.POST.get("code")
+        snippet.save()
+    return redirect('snippetslist')
+
+
 
 
 

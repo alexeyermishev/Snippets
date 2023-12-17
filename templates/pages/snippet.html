@@ -16,17 +16,23 @@
             <div class="row">
                 <div class="col">
                     <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
-                        <p>
-                            {{snippet.code}}
-                        </p>
+                        <input type="text" value={{snippet.code}} class="form-control">
                     </div>
                 </div>
             </div>
         </fieldset>
-        <div class="col">
-                <form action="{% url 'req_del' snippet.id %}">
-                 <button>Удалить</button>
+        <div class="row">
+            <div class="col">
+                <form action="{% url 'snippet' snippet.id %}", method="post">
+                {% csrf_token %}
+                <button class="btn btn-success">Редактировать</button>
                 </form>
+            </div>
+            <div class="col">
+                <form action="{% url 'req_del' snippet.id %}">
+                <button class="btn btn-danger">Удалить</button>
+                </form>
+            </div>
         </div>
     </div>
 </main>

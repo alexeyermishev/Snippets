@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main role="main" class="mt-3 flex-shrink-0">
+    <div class="container">
+        <fieldset enabled>
+            <form action="{% url 'edit_snippet' snippet.id %}", method="post">
+            {% csrf_token %}
+            <div class="row disabled">
+                <div class="col col-8">
+                    Название: <input type="text" name="name" value={{snippet.name}} class="form-control">
+                </div>
+                <div class="col col-4">
+                    Дата создания:<input type="text" value={{snippet.creation_date}} class="form-control">
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
+                        <input type="text" name="code" value={{snippet.code}} class="form-control">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col">
+                    <input type="submit" name="saved" class="btn btn-success" value="Сохранить">
+                </div>
+                <div class="col">
+                    <input type="submit" name="cancelled" class="btn btn-secondary" value="Отмена">
+                </div>
+            </div>
+            </form>
+        </fieldset>
+    </div>
+</main>
+{% endblock %}

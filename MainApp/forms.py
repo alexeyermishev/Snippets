@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm, TextInput, Textarea
 from MainApp.models import Snippet
 
@@ -12,3 +13,10 @@ class SnippetForm(ModelForm):
           'code': Textarea(attrs={'placeholder': 'Код сниппета'}),
         }
         labels = {'name': '', 'lang': '', 'code': ''}
+
+class UserForm(forms.Form):
+    model = Snippet
+    fields = ['name', 'lang', 'code']
+    name = forms.CharField(max_length=100)
+    code = forms.CharField(max_length=100)
+
