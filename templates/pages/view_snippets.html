@@ -29,16 +29,23 @@
                         <th scope="col">ID</th>
                         <th scope="col">Название</th>
                         <th scope="col">Дата создания</th>
+                        <th scope="col">User</th>
                     </tr>
                     </thead>
                     <tbody>
 
                     {% for snippet in snippets %}
-                    <tr>
-                        <td scope="row">{{snippet.id}}</td>
-                        <td><a href="{% url 'snippet' snippet.id %}">{{snippet.name}}</a></td>
-                        <td>{{snippet.creation_date}}</td>
-                    </tr>
+                        <tr>
+                            <td scope="row">{{snippet.id}}</td>
+                            <td><a href="{% url 'snippet' snippet.id %}">{{snippet.name}}</a></td>
+                            <td>{{snippet.creation_date}}</td>
+                            <td>{{snippet.user.username}}</td>
+                            {% if snippet.public %}
+                            <td>Public</td>
+                            {% else %}
+                            <td>Private</td>
+                            {% endif %}
+                        </tr>
                     {% endfor %}
                     
                     </tbody>

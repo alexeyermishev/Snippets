@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from MainApp.models import Snippet
 from MainApp.forms import SnippetForm
 from MainApp.forms import UserForm
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -12,6 +14,7 @@ def index_page(request):
     return render(request, 'pages/index.html', context)
 
 
+@login_required
 def add_snippet_page(request):
     if request.method == "GET":
         form = SnippetForm()
@@ -27,10 +30,15 @@ def add_snippet_page(request):
             return redirect("snippetslist")
         return render(request, 'pages/add_snippet.html', {'form': form})
 
-
+def my_snippets(request):
+    snippets = Snippet.objects.filter(user=request.user)
+    context = {'pagename': 'Просмотр сниппетов',
+                'snippets': snippets,
+                'lensnippets':len(snippets)}
+    return render(request, 'pages/view_snippets.html', context)
 
 def snippets_page(request):
-    snippets = Snippet.objects.all()
+    snippets = Snippet.objects.filter(public=True)
     context = {'pagename': 'Просмотр сниппетов',
                 'snippets': snippets,
                 'lensnippets':len(snippets)}
@@ -50,11 +58,14 @@ def get_snippet(request, snippet_id):
 
 def create_snippet(request):
    if request.method == "POST":
-       form = SnippetForm(request.POST)
-       if form.is_valid():
-           form.save()
-           return redirect("snippetslist")
-       return render(request,'pages/add_snippet.html',{'form': form})
+        form = SnippetForm(request.POST)
+        if form.is_valid():
+            snippet = form.save(commit=False)
+            if request.user.is_authenticated:
+                snippet.user = request.user
+                snippet.save()
+            return redirect("snippetslist")
+        return render(request,'pages/add_snippet.html',{'form': form})
 
 def req_del(request, snippet_id):
     try:
@@ -80,10 +91,33 @@ def edit_snippet(request, snippet_id):
         if 'saved' in request.POST:
             snippet.name = request.POST.get("name")
             snippet.code = request.POST.get("code")
+            snippet.public = request.POST.get("public", False)
         snippet.save()
     return redirect('snippetslist')
 
 
+def login(request):
+    if request.method =="POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password") 
+        user = auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+        else:
+           context = {
+                'pagename': "PythonBin",
+                'errors': ["wrong username or password"]
+           }
+           return render(request, "pages/index.html", context)
+    return redirect('index')
 
+
+def logout(request):
+    auth.logout(request)
+    return redirect("index")
+
+
+def login_page(request):
+    return render(request, "pages/login_page.html")
 
 

@@ -20,7 +20,15 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <div class="p-2 h-100" style="border:1px solid #ced4da; border-radius:5px;">
+                        <input type="text" value={{snippet.public}} class="form-control">
+                    </div>
+                </div>
+            </div>
         </fieldset>
+            {% if request.user == snippet.user%}
             <div class="row" style="display: flex; flex-direction: column;">
                 <div class="col" style="padding: 5px;">
                     <form action="{% url 'snippet' snippet.id %}", method="post">
@@ -34,6 +42,7 @@
                     </form>
                 </div>
             </div>
+            {% endif %}
     </div>
 </main>
 {% endblock %}

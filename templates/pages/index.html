@@ -17,6 +17,13 @@
                 <hr>
             </div>
         </div>
+        {% if request.user.is_authenticated %}
+        <div class="row mt-3">
+            <div class="col-4 offset-4">
+                <a href="{% url 'my_snippets' %}" class="btn btn-secondary btn-block">My snippets</a>
+            </div>
+        {% endif %}
+        </div>
 
         <div class="row mt-3">
             <div class="col-4 offset-4">
