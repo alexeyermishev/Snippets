@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- Begin page content -->
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1>{{ pagename }}</h1>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p>Добро пожаловать, уважаемый пользователь!
+                <p>На этом сайте ты сможешь сохранить свои заготовки кода на различных языках программирования<br>
+                    А также делиться ими с другими пользователями...
+                <hr>
+            </div>
+        </div>
+        <form action="{% url 'registration' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Создать пользователя">
+        </form>
+    </div>        
+{% endblock %}

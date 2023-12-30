@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
 from MainApp.models import Snippet
-from MainApp.forms import SnippetForm
+from MainApp.forms import SnippetForm, UserRegistrationForm
 from MainApp.forms import UserForm
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -121,3 +121,28 @@ def login_page(request):
     return render(request, "pages/login_page.html")
 
 
+def create_user(request):
+    if request.method == "GET":
+        context = {'pagename': 'Registration new user'}
+        form = UserRegistrationForm()
+        context['form'] = form
+        return render(request, 'pages/registration.html', context)
+    if request.method == "POST":
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+        context['form'] = form
+        return render(request, 'pages/registration.html', context)
+
+def comment_add(request):
+    if request.method == "POST":
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            snippet_id = request.POST["snippet_id"]
+            snippet = Snippet.objects.get(id=snippet_id)
+            comment = comment_form.save(commit=False)
+            comment.author = request.user
+            comment.snippet = snippet
+            comment.save()
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
